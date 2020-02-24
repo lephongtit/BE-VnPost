@@ -1,9 +1,10 @@
 package com.example.vnpost.service;
 
 import com.example.vnpost.model.ChuyenMuc;
+import org.springframework.stereotype.Service;
 
 import java.util.Optional;
-
+@Service
 public interface ChuyenMucService {
     Iterable<ChuyenMuc> findAll();
 
