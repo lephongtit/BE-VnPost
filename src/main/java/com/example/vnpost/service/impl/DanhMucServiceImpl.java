@@ -40,15 +40,6 @@ public class DanhMucServiceImpl implements DanhMucService {
 
     }
 
-    @Override
-    public DanhMuc findByName(String name) {
-        return danhMucRepository.findByName(name);
-    }
-
-    @Override
-    public Iterable<DanhMuc> findAllByChuyenMuc(ChuyenMuc chuyenMuc) {
-        return danhMucRepository.findAllByNameChuyenMuc(chuyenMuc);
-    }
 
 
 }

@@ -7,7 +7,8 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface DanhMucRepository extends JpaRepository<DanhMuc,Long> {
-    DanhMuc findByName(String name);
-    Iterable<DanhMuc> findAllByNameChuyenMuc(ChuyenMuc chuyenMuc);
+
+//    DanhMuc findByName(String name);
+
 
 }

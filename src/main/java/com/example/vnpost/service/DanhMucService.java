@@ -16,7 +16,7 @@ public interface DanhMucService {
 
     void delete(Long id);
 
-    DanhMuc findByName(String name);
 
-    Iterable<DanhMuc> findAllByChuyenMuc(ChuyenMuc chuyenMuc);
+
+
 }

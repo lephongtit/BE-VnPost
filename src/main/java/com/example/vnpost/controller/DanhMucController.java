@@ -29,32 +29,22 @@ public class DanhMucController {
         return  new ResponseEntity<>(danhMucs,HttpStatus.OK);
     }
 
-    //list danh muc trong 1 chuyen muc
 
-    @GetMapping("/chuyen-muc/{id}/danh-muc")
-    public ResponseEntity<Iterable<ChuyenMuc>> listDanhMucInChuyenMuc(@PathVariable("id")Long id){
-        Optional<ChuyenMuc> chuyenMuc=chuyenMucService.findByid(id);
-        if (!chuyenMuc.isPresent()){
+   // them danh muc trong chuyen muc
+
+    @PostMapping("/chuyen-muc/{id}/danh-muc")
+    public ResponseEntity<Iterable<ChuyenMuc>> createDanhmuc(@PathVariable("id") Long id,@RequestBody DanhMuc danhMuc){
+        Optional<ChuyenMuc>chuyenMuc=chuyenMucService.findByid(id);
+        if (chuyenMuc.isPresent()){
+            danhMuc.setNameChuyenMuc(chuyenMuc.get().getName());
+            danhMucService.save(danhMuc);
+            chuyenMuc.get().getDanhMucList().add(danhMuc);
+            chuyenMucService.save(chuyenMuc.get());
+            return new ResponseEntity(chuyenMuc,HttpStatus.OK);
+        }else{
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
-        Iterable<DanhMuc>danhMucs=danhMucService.findAllByChuyenMuc(chuyenMuc.get());
-        return new ResponseEntity(danhMucs,HttpStatus.OK);
     }
-
-    //them danh muc trong 1 chuyen muc
-//    @PostMapping("/chuyen-muc/{id}/danh-muc")
-//    public ResponseEntity<Iterable<ChuyenMuc>> createDanhMucInChuyenMuc(@PathVariable("id")Long id, @RequestBody DanhMuc danhMuc){
-//        Optional<ChuyenMuc> chuyenMuc= chuyenMucService.findByid(id);
-//        if (chuyenMuc.isPresent()){
-//            danhMuc.setNameChuyenMuc(chuyenMuc.get().getName());
-//            danhMucService.save(danhMuc);
-//            chuyenMuc.get().getDanhMucs().add(danhMuc);
-//            chuyenMucService.save(chuyenMuc.get());
-//            return new ResponseEntity(chuyenMuc, HttpStatus.OK);
-//        }else {
-//            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-//        }
-//    }
 
     //xoa 1 danh muc trong 1 chuyen muc
     @DeleteMapping("/chuyen-muc/{id}/danh-muc/{id}")
@@ -74,22 +64,18 @@ public class DanhMucController {
 
     // sua 1 danh muc trong chuyen muc
 
-    @PutMapping("/chuyen-muc/{id}/danh-muc/{id}")
-    public ResponseEntity<Iterable<ChuyenMuc>> edit( @PathVariable("id")Long id, @RequestBody DanhMuc danhMuc){
-        Optional<ChuyenMuc> chuyenMuc= chuyenMucService.findByid(id);
-        if (chuyenMuc.isPresent()){
-            Optional<DanhMuc> danhMuc1=danhMucService.findById(id);
-            if (danhMuc1.isPresent()){
-                danhMuc1.get().setName(danhMuc.getName());
-                danhMucService.save(danhMuc1.get());
-                return new ResponseEntity<>(HttpStatus.OK);
-            }else {
-                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-            }
-        }else {
+    @PutMapping("/danh-muc/{id}")
+    public ResponseEntity<Iterable<DanhMuc>> edit(@PathVariable("id")Long id,@RequestBody DanhMuc danhMuc){
+        Optional<DanhMuc> danhMuc1=danhMucService.findById(id);
+        if (danhMuc1.isPresent()){
+            danhMuc1.get().setNameDanhMuc(danhMuc.getNameDanhMuc());
+            danhMucService.save(danhMuc1.get());
+            return new ResponseEntity(danhMuc1,HttpStatus.OK);
+        }else{
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
     }
+
 
 
 

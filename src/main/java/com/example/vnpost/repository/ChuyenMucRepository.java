@@ -6,6 +6,7 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface ChuyenMucRepository extends JpaRepository<ChuyenMuc,Long>{
+
     ChuyenMuc findByName(String name);
 
 }

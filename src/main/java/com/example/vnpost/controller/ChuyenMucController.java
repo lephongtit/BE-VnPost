@@ -17,8 +17,7 @@ import java.util.Optional;
 @CrossOrigin("*")
 
 public class ChuyenMucController {
-    @Autowired
-    ChuyenMucServiceImpl chuyenMucServices;
+
     @Autowired
     private ChuyenMucService chuyenMucService;
     @Autowired
@@ -47,18 +46,21 @@ public class ChuyenMucController {
         }
     }
     @DeleteMapping("/chuyen-muc/{id}")
-    public ResponseEntity<ChuyenMuc> deleteChuyenMuc(@PathVariable("id")Long id){
-       Optional<ChuyenMuc> chuyenMuc = chuyenMucService.findByid(id);
-       if (!chuyenMuc.isPresent()){
-           return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-       }else {
-           List<DanhMuc> danhMucList= (List<DanhMuc>) danhMucService.findAllByChuyenMuc(chuyenMuc.get());
-           for (DanhMuc danhMuc:danhMucList){
-               danhMuc.setChuyenMuc(null);
-               danhMucService.save(danhMuc);
-           }
-           chuyenMucService.delete(id);
-           return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-       }
+    public ResponseEntity<Void> delete(@PathVariable("id") Long id){
+        Optional<ChuyenMuc> chuyenMuc=chuyenMucService.findByid(id);
+        if (chuyenMuc== null){
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        chuyenMucService.delete(id);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
+// xem chi tiet 1 chuyen muc
+@GetMapping("/chuyen-muc/{id}")
+public ResponseEntity<ChuyenMuc> findById(@PathVariable Long id) {
+    Optional<ChuyenMuc> chuyenMuc= chuyenMucService.findByid(id);
+    if (chuyenMuc == null) {
+        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+    }
+    return new ResponseEntity(chuyenMuc, HttpStatus.OK);
+}
 }
