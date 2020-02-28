@@ -1,12 +1,16 @@
 package com.example.vnpost.controller;
 
 import com.example.vnpost.model.ChuyenMuc;
+import com.example.vnpost.model.DanhMuc;
 import com.example.vnpost.service.ChuyenMucService;
+import com.example.vnpost.service.DanhMucService;
+import com.example.vnpost.service.impl.ChuyenMucServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Optional;
 
 @RestController
@@ -14,7 +18,11 @@ import java.util.Optional;
 
 public class ChuyenMucController {
     @Autowired
+    ChuyenMucServiceImpl chuyenMucServices;
+    @Autowired
     private ChuyenMucService chuyenMucService;
+    @Autowired
+    private DanhMucService danhMucService;
 
     @GetMapping("/chuyen-muc")
     public ResponseEntity<Iterable<ChuyenMuc>> listChuyenMuc(){
@@ -40,11 +48,17 @@ public class ChuyenMucController {
     }
     @DeleteMapping("/chuyen-muc/{id}")
     public ResponseEntity<ChuyenMuc> deleteChuyenMuc(@PathVariable("id")Long id){
-        Optional<ChuyenMuc> chuyenMuc= chuyenMucService.findByid(id);
-            if (chuyenMuc.isPresent()){
-                chuyenMucService.delete(id);
-                return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-            }
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+       Optional<ChuyenMuc> chuyenMuc = chuyenMucService.findByid(id);
+       if (!chuyenMuc.isPresent()){
+           return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+       }else {
+           List<DanhMuc> danhMucList= (List<DanhMuc>) danhMucService.findAllByChuyenMuc(chuyenMuc.get());
+           for (DanhMuc danhMuc:danhMucList){
+               danhMuc.setChuyenMuc(null);
+               danhMucService.save(danhMuc);
+           }
+           chuyenMucService.delete(id);
+           return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+       }
     }
 }

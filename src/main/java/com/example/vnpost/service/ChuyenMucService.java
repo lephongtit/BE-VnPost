@@ -1,6 +1,7 @@
 package com.example.vnpost.service;
 
 import com.example.vnpost.model.ChuyenMuc;
+import com.example.vnpost.model.DanhMuc;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
@@ -15,5 +16,7 @@ public interface ChuyenMucService {
     void delete(Long id);
 
     ChuyenMuc findByName(String name);
+
+
 
 }

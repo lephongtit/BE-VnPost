@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import java.util.Optional;
 @Service
 public class ChuyenMucServiceImpl implements ChuyenMucService {
+
     @Autowired
     private ChuyenMucRepository chuyenMucRepository;
 
@@ -32,7 +33,7 @@ public class ChuyenMucServiceImpl implements ChuyenMucService {
     public void delete(Long id) {
         Optional<ChuyenMuc> chuyenMuc= chuyenMucRepository.findById(id);
         if (chuyenMuc.isPresent()){
-            chuyenMucRepository.delete(chuyenMuc.get());
+            chuyenMucRepository.deleteById(id);
         }
 
     }
