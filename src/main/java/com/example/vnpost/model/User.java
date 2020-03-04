@@ -3,6 +3,7 @@ package com.example.vnpost.model;
 import javax.persistence.*;
 import javax.validation.constraints.Email;
 import java.io.Serializable;
+import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -43,6 +44,16 @@ public class User implements Serializable {
             inverseJoinColumns = {@JoinColumn(name = "role_id")})
     private Set<Role> roles;
 
+    @OneToMany(targetEntity = Posts.class)
+    private List<Posts> postsList;
+
+    public List<Posts> getPostsList() {
+        return postsList;
+    }
+
+    public void setPostsList(List<Posts> postsList) {
+        this.postsList = postsList;
+    }
 
     public User() {
     }

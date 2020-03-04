@@ -52,7 +52,7 @@ public class ChuyenMucController {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
         chuyenMucService.delete(id);
-        return new ResponseEntity<>(HttpStatus.OK);
+        return new ResponseEntity(chuyenMuc,HttpStatus.OK);
     }
 // xem chi tiet 1 chuyen muc
 @GetMapping("/chuyen-muc/{id}")

@@ -1,5 +1,6 @@
 package com.example.vnpost.sercurity;
 
+
 import com.example.vnpost.sercurity.jwt.CustomAccessDeniedHandler;
 import com.example.vnpost.sercurity.jwt.JwtAuthenticationFilter;
 import com.example.vnpost.sercurity.jwt.RestAuthenticationEntryPoint;
@@ -25,11 +26,13 @@ import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 @Configuration
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(securedEnabled = true)
-public class SecurityConfig extends WebSecurityConfigurerAdapter {
+public class SecurityConfig  extends WebSecurityConfigurerAdapter {
+
     @Bean
-    public UserService userService(){
+    public UserService userService() {
         return new UserServiceImpl();
     }
+
     @Autowired
     private UserService userService;
 
@@ -70,25 +73,29 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http.csrf().ignoringAntMatchers("/**");
         http.httpBasic().authenticationEntryPoint(restServicesEntryPoint());
         http.authorizeRequests()
-                .antMatchers("/**","/login",
-                        "/host/**",
+                .antMatchers(
+                        "/**",
+                        "/room/**",
                         "/register",
-                        "/confirm-account/**",
                         "/forgot-password",
-                        "/new-password/**",
-                        "/users/**",
-                        "/role",
-                        "/category/room",
-                        "/category/house").permitAll()
+                        "/house/**"
+                ).permitAll()
+
                 .antMatchers(HttpMethod.GET
                 ).access("hasRole('ROLE_USER') or hasRole('ROLE_ADMIN')")
-                .antMatchers(HttpMethod.DELETE, "/categories",
-                        "/typeOfQuestions",
-                        "/questions",
-                        "/answers",
-                        "/quizzes").access("hasRole('ROLE_ADMIN')")
+
+                .antMatchers(HttpMethod.DELETE,
+                        "/category/house/**"
+                ).access("hasRole('ROLE_ADMIN')")
+
+                .antMatchers(HttpMethod.POST,
+                        "/category/house/**"
+                ).access("hasRole('ROLE_ADMIN')")
+
+
                 .antMatchers(HttpMethod.PUT, "/users")
                 .access("hasRole('ROLE_USER')")
+
                 .anyRequest().authenticated()
                 .and().csrf().disable()
                 .logout().logoutRequestMatcher(new AntPathRequestMatcher("/logout"));
@@ -98,5 +105,4 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS);
         http.cors();
     }
-
 }

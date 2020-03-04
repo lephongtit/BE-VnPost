@@ -1,13 +1,13 @@
 package com.example.vnpost.model;
 
-import lombok.Data;
+
 import org.hibernate.annotations.CreationTimestamp;
 
 import javax.persistence.*;
 import java.util.Date;
 
 @Entity
-@Data
+
 public class Posts {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -21,38 +21,39 @@ public class Posts {
     @Column(columnDefinition = "TEXT")
     private String imageUrls;
 
-    @ManyToOne
-    @JoinColumn(name = "user_id")
-    private  User user;
+    private String userName;
+    private String nameDanhMuc;
 
-    @Temporal(TemporalType.TIMESTAMP)
-    @CreationTimestamp
-    private Date date;
+//    @Temporal(TemporalType.TIMESTAMP)
+//    @CreationTimestamp
+//    private Date date;
+
 
     public Posts() {
     }
 
-    public Posts(String title, String content, String imageUrls, Date date) {
+    public Posts(String title, String content, String imageUrls, String userName, String nameDanhMuc) {
         this.title = title;
         this.content = content;
         this.imageUrls = imageUrls;
-        this.date = date;
+        this.userName = userName;
+        this.nameDanhMuc = nameDanhMuc;
     }
 
-    public Posts(String title, String content, String imageUrls, User user, Date date) {
-        this.title = title;
-        this.content = content;
-        this.imageUrls = imageUrls;
-        this.user = user;
-        this.date = date;
+    public String getNameDanhMuc() {
+        return nameDanhMuc;
     }
 
-    public User getUser() {
-        return user;
+    public void setNameDanhMuc(String nameDanhMuc) {
+        this.nameDanhMuc = nameDanhMuc;
     }
 
-    public void setUser(User user) {
-        this.user = user;
+    public String getUserName() {
+        return userName;
+    }
+
+    public void setUserName(String userName) {
+        this.userName = userName;
     }
 
     public Long getId() {
@@ -87,11 +88,11 @@ public class Posts {
         this.imageUrls = imageUrls;
     }
 
-    public Date getDate() {
-        return date;
-    }
-
-    public void setDate(Date date) {
-        this.date = date;
-    }
+//    public Date getDate() {
+//        return date;
+//    }
+//
+//    public void setDate(Date date) {
+//        this.date = date;
+//    }
 }

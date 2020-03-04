@@ -1,39 +1,27 @@
 package com.example.vnpost.model;
-
-import lombok.Data;
-
 import javax.persistence.*;
 import java.util.List;
 
 @Entity
-@Data
 public class DanhMuc {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private  Long id;
+    private Long id;
     private String nameDanhMuc;
-    private String nameChuyenMuc;
+
+    @ManyToOne
+    @JoinColumn(name = "ChuyenMuc")
+    private ChuyenMuc chuyenMuc;
+
+    @OneToMany(targetEntity = Posts.class)
     private List<Posts> postsList;
 
     public DanhMuc() {
     }
 
-    public DanhMuc(String nameDanhMuc, String nameChuyenMuc) {
+    public DanhMuc(String nameDanhMuc, ChuyenMuc chuyenMuc, List<Posts> postsList) {
         this.nameDanhMuc = nameDanhMuc;
-        this.nameChuyenMuc = nameChuyenMuc;
-    }
-
-    public DanhMuc(String nameDanhMuc, String nameChuyenMuc, List<Posts> postsList) {
-        this.nameDanhMuc = nameDanhMuc;
-        this.nameChuyenMuc = nameChuyenMuc;
-        this.postsList = postsList;
-    }
-
-    public List<Posts> getPostsList() {
-        return postsList;
-    }
-
-    public void setPostsList(List<Posts> postsList) {
+        this.chuyenMuc = chuyenMuc;
         this.postsList = postsList;
     }
 
@@ -53,11 +41,19 @@ public class DanhMuc {
         this.nameDanhMuc = nameDanhMuc;
     }
 
-    public String getNameChuyenMuc() {
-        return nameChuyenMuc;
+    public ChuyenMuc getChuyenMuc() {
+        return chuyenMuc;
     }
 
-    public void setNameChuyenMuc(String nameChuyenMuc) {
-        this.nameChuyenMuc = nameChuyenMuc;
+    public void setChuyenMuc(ChuyenMuc chuyenMuc) {
+        this.chuyenMuc = chuyenMuc;
+    }
+
+    public List<Posts> getPostsList() {
+        return postsList;
+    }
+
+    public void setPostsList(List<Posts> postsList) {
+        this.postsList = postsList;
     }
 }
